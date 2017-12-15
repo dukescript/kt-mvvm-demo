@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1513332940799
+Build-Jdk: 1.8.0_112
+Built-By: antonepple
+Bundle-ManifestVersion: 2
+Bundle-Name: demo General Client Code
+Bundle-SymbolicName: com.kt.mvvm.demo
+Bundle-Version: 1.0.0.SNAPSHOT
+Class-Path: lib/net.java.html-1.5.1.jar lib/net.java.html.json-1.5.1.jar
+  lib/net.java.html.boot-1.5.1.jar lib/net.java.html.sound-1.5.1.jar lib
+ /ko4j-1.5.1.jar lib/kt-mvvm-0.1.jar lib/kotlin-stdlib-jre8-1.2.0.jar li
+ b/kotlin-stdlib-1.2.0.jar lib/annotations-13.0.jar lib/kotlin-stdlib-jr
+ e7-1.2.0.jar lib/net.java.html.boot.fx-1.5.1.jar
+Created-By: Apache Maven Bundle Plugin
+Export-Package: com.kt.mvvm.demo;uses:="com.dukescript.api.kt,kotlin";ve
+ rsion="1.0.0.SNAPSHOT"
+Import-Package: com.dukescript.api.kt;version="[0.1,1)",kotlin,kotlin.jv
+ m.functions,kotlin.jvm.internal,kotlin.properties,kotlin.reflect,net.ja
+ va.html.boot;version="[1.5,2)"
+Main-Class: com.kt.mvvm.demo.Main
+Tool: Bnd-2.1.0.20130426-122213
