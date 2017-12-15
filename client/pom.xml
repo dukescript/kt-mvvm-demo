@@ -201,11 +201,6 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.dukescript</groupId>
-            <artifactId>twitter-js</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.dukescript.api</groupId>
             <artifactId>kt-mvvm</artifactId>
             <version>0.1</version>
