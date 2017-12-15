@@ -56,6 +56,10 @@ class Demo : Model.Provider {
     var newTodo by observable("Buy Milk",{println("value has changed")})
     val todos: MutableList<String> by observableList()
     
+    val numTodos by computed {
+        todos.size
+    }
+    
     val add by action {
         todos += newTodo
         newTodo = ""

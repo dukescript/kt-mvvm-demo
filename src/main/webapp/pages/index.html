@@ -30,6 +30,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
+        <h1 data-bind="text: 'Your Todos ('+numTodos()+')'"></h1>
         <label for="key">Enter your name: </label>
         <input id="key" type="text" data-bind="textInput: newTodo" placeholder="Enter a task"/>
         <button data-bind="click: add, enable: newTodo()">add</button>
