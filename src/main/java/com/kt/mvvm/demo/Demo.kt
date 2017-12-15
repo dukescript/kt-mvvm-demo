@@ -53,7 +53,7 @@ fun onPageLoad() {
 class Demo : Model.Provider {
     override val objs = Model(this)
 
-    var newTodo by observable("Buy Milk",{println("value has changed")})
+    var newTodo by observable("Buy Milk")
     val todos: MutableList<String> by observableList()
     
     val numTodos by computed {
