@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <label for="key">Enter your name: </label>
+        <input id="key" type="text" data-bind="textInput: newTodo" placeholder="Enter your Name"/>
+        <button data-bind="click: add">add</button>
+        <ul class="todos" data-bind='foreach: todos' width='100%'>
+            <li>
+                <span data-bind="text: $data"></span> 
+            </li>
+        </ul>    
+<!-- ${browser.bootstrap} -->
+    </body>
+</html>
