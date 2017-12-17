@@ -3,12 +3,6 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-      <groupId>com.kt.mvvm</groupId>
-      <artifactId>demo-pom</artifactId>
-      <version>1.0-SNAPSHOT</version>
-  </parent>
-
   <groupId>com.kt.mvvm</groupId>
   <artifactId>demo</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -21,6 +15,7 @@
     <project.mainclass>com.kt.mvvm.demo.Main</project.mainclass>
     <exec.java.bin>${java.home}/bin/java</exec.java.bin>
     <exec.debug.arg>-Ddebug=false</exec.debug.arg>
+    <net.java.html.version>1.5.1</net.java.html.version>
   </properties>
   <build>
         <plugins>
