@@ -53,15 +53,15 @@ fun onPageLoad() {
 class Demo : Model.Provider {
     override val objs = Model(this)
 
-    var newTodo by observable("Buy Milk")
+    var desc by observable("Buy Milk")
     val todos: MutableList<String> by observableList()
     
     val numTodos by computed {
         todos.size
     }
     
-    val add by action {
-        todos += newTodo
-        newTodo = ""
+    val addTodo by action {
+        todos += desc
+        desc = ""
     }
 }
