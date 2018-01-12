@@ -1,4 +1,5 @@
 @file:JvmName("Main")
+
 /**
  * The MIT License (MIT)
  *
@@ -26,6 +27,8 @@ package com.kt.mvvm.demo
 
 
 import net.java.html.boot.BrowserBuilder
+import net.java.html.js.JavaScriptBody
+
 import com.dukescript.api.kt.Model
 import com.dukescript.api.kt.action
 import com.dukescript.api.kt.actionWithData
@@ -49,19 +52,29 @@ fun onPageLoad() {
     applyBindings(model);
 }
 
+@JavaScriptBody(args = arrayOf("msg"), body = "return confirm(msg);")
+private fun confirm(msg: String): Boolean {
+    throw IllegalStateException("not implemented confirm: ${msg}")
+}
 
 class Demo : Model.Provider {
     override val objs = Model(this)
 
     var newTodo by observable("Buy Milk")
     val todos: MutableList<String> by observableList()
-    
+
     val numTodos by computed {
         todos.size
     }
-    
+
     val add by action {
         todos += newTodo
         newTodo = ""
+    }
+
+    val clear by action {
+        if (confirm("Clear all todos?")) {
+            todos.clear()
+        }
     }
 }

@@ -37,6 +37,17 @@
                 <version>1.1.60</version>
                 <executions>
                     <execution>
+                        <id>kapt</id>
+                        <goals>
+                            <goal>kapt</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>src/main/java</sourceDir>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>compile</id>
                         <phase>process-sources</phase>
                         <goals>
@@ -48,6 +59,19 @@
                         <phase>process-test-sources</phase>
                         <goals>
                             <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.netbeans.html</groupId>
+                <artifactId>html4j-maven-plugin</artifactId>
+                <version>${net.java.html.version}</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>process-js-annotations</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -95,7 +119,7 @@
                         <argument>${project.mainclass}</argument>
                     </arguments>
                 </configuration>
-            </plugin>      
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -122,7 +146,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>          
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.4</version>
@@ -151,7 +175,7 @@
                             </descriptors>
                         </configuration>
                     </execution>
-                </executions>                
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -215,6 +239,6 @@
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
-        </profile>      
-    </profiles>  
+        </profile>
+    </profiles>
 </project>
