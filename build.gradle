@@ -27,6 +27,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "com.dukescript.api:kt-mvvm:0.1"
     runtime "org.netbeans.html:net.java.html.boot.fx:1.5.1"
+    kapt "org.netbeans.html:net.java.html.boot:1.5.1"
 }
 
 compileKotlin {
