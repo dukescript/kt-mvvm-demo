@@ -40,9 +40,8 @@ import com.dukescript.api.kt.loadJSON
 
 fun main(args: Array<String>) {
     BrowserBuilder.newBrowser().loadPage("pages/index.html")
-            .loadFinished {
-                onPageLoad()
-            }
+            .loadClass(Class.forName("com.kt.mvvm.demo.Main"))
+            .invoke("onPageLoad")
             .showAndWait();
     System.exit(0);
 }
