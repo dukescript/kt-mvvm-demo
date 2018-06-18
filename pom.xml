@@ -12,7 +12,7 @@
 
   <properties>
     <netbeans.compile.on.save>all</netbeans.compile.on.save>
-    <project.mainclass>com.kt.mvvm.demo.Main</project.mainclass>
+    <project.mainclass>com.kt.mvvm.demo.DesktopMain</project.mainclass>
     <exec.java.bin>${java.home}/bin/java</exec.java.bin>
     <exec.debug.arg>-Ddebug=false</exec.debug.arg>
     <net.java.html.version>1.5.1</net.java.html.version>
@@ -42,6 +42,12 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <dir>src/main/java</dir>
+                                <dir>desktop/src/main/java</dir>
+                            </sourceDirs>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>test-compile</id>
