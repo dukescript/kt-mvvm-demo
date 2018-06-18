@@ -1,4 +1,4 @@
-@file:JvmName("Main")
+@file:JvmName("MoeMain")
 /**
  * The MIT License (MIT)
  *
@@ -24,34 +24,14 @@
  */
 package com.kt.mvvm.demo
 
+import net.java.html.boot.BrowserBuilder
+import com.kt.mvvm.demo.Demo
 
-import com.dukescript.api.kt.Model
-import com.dukescript.api.kt.action
-import com.dukescript.api.kt.actionWithData
-import com.dukescript.api.kt.applyBindings
-import com.dukescript.api.kt.computed
-import com.dukescript.api.kt.observable
-import com.dukescript.api.kt.observableList
-import com.dukescript.api.kt.loadJSON
-
-fun onPageLoad() {
-    val model = Demo()
-    applyBindings(model);
-}
-
-
-class Demo : Model.Provider {
-    override val objs = Model(this)
-
-    var desc by observable("Buy Milk")
-    val todos: MutableList<String> by observableList()
-    
-    val numTodos by computed {
-        todos.size
-    }
-    
-    val addTodo by action {
-        todos += desc
-        desc = ""
-    }
+fun main(args: Array<String>) {
+    BrowserBuilder.newBrowser().loadPage("pages/index.html")
+            .loadFinished {
+                com.kt.mvvm.demo.onPageLoad()
+            }
+            .showAndWait();
+    System.exit(0);
 }
