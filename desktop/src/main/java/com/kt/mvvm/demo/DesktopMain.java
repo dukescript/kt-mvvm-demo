@@ -1,4 +1,3 @@
-@file:JvmName("DesktopMain")
 /**
  * The MIT License (MIT)
  *
@@ -22,16 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kt.mvvm.demo
+package com.kt.mvvm.demo;
 
-import net.java.html.boot.BrowserBuilder
-import com.kt.mvvm.demo.Demo
+import net.java.html.boot.BrowserBuilder;
 
-fun main(args: Array<String>) {
-    BrowserBuilder.newBrowser().loadPage("pages/index.html")
-            .loadFinished {
-                com.kt.mvvm.demo.onPageLoad()
-            }
-            .showAndWait();
-    System.exit(0);
+class DesktopMain {
+    public static void main(String[] args) {
+        BrowserBuilder.newBrowser().loadPage("pages/index.html")
+                .loadFinished(Demo::onPageLoad)
+                .showAndWait();
+        System.exit(0);
+    }
 }
