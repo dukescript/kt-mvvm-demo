@@ -1,18 +1,13 @@
 buildscript {
-    ext.kotlin_version = '1.2.41'
-
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
 }
+
+apply plugin: 'java'
 
 group 'com.dukescript.demo'
 version '1.0-SNAPSHOT'
-
-apply plugin: 'kotlin'
 
 allprojects {
     repositories {
@@ -21,13 +16,6 @@ allprojects {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    compile "com.dukescript.api:kt-mvvm:0.3"
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.6"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.6"
+    compile "org.netbeans.html:net.java.html.json:1.6"
+    compile "com.dukescript.api:javafx.beaninfo:0.4"
 }

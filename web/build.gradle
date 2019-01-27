@@ -9,7 +9,7 @@ buildscript {
     }
 }
 
-apply plugin: 'kotlin'
+apply plugin: 'java'
 apply plugin: 'bck2brwsr'
 
 mainClassName = 'com.kt.mvvm.demo.BrowserMain'
