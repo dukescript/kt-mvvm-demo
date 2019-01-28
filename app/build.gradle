@@ -19,6 +19,7 @@ def commonProject = project.parent
 dependencies {
     compile commonProject
     compile "com.dukescript.presenters:android:1.5.1"
+    compile "org.netbeans.html:ko4j:1.6"
 }
 
 android {

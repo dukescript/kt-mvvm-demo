@@ -1,4 +1,3 @@
-@file:JvmName("BrowserMain")
 /**
  * The MIT License (MIT)
  *
@@ -22,11 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.kt.mvvm.demo
+package com.kt.mvvm.demo;
 
-import com.kt.mvvm.demo.Demo
-
-fun main(args: Array<String>) {
-    com.kt.mvvm.demo.onPageLoad()
+class BrowserMain {
+    public static void main(String... args) {
+        Demo.onPageLoad();
+    }
 }
-

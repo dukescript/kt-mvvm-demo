@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <meta-data android:name="loadPage" android:value="file:///android_asset/pages/index.html"/>
-        <meta-data android:name="loadClass" android:value="com.kt.mvvm.demo.Main"/>
+        <meta-data android:name="loadClass" android:value="com.kt.mvvm.demo.Demo"/>
         <meta-data android:name="invoke" android:value="onPageLoad"/>
     </application>
 </manifest>

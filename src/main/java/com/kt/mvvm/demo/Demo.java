@@ -33,9 +33,9 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import static net.java.html.json.Models.applyBindings;
 
-final class Demo implements FXBeanInfo.Provider {
+public final class Demo implements FXBeanInfo.Provider {
     private final StringProperty desc = new SimpleStringProperty(this, "desc", "Buy Milk");
-    private final ListProperty<String> todos = new SimpleListProperty<String>(this, "todos", FXCollections.observableArrayList());
+    private final ListProperty<String> todos = new SimpleListProperty<>(this, "todos", FXCollections.observableArrayList());
     private final IntegerBinding numTodos = Bindings.createIntegerBinding(todos::size, todos);
 
     void addTodo() {
