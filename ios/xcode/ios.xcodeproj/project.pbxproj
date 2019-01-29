@@ -201,6 +201,7 @@
 					};
 					45737FA19169475EBC6F4098 = {
 						DevelopmentTeam = ABC68N4HR3;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -403,6 +404,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ABC68N4HR3;
 				ENABLE_BITCODE = NO;
@@ -431,6 +434,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dukescript.presenters.testing.moe;
 				PRODUCT_NAME = ios;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_STYLE = "non-global";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -529,6 +533,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ABC68N4HR3;
 				ENABLE_BITCODE = NO;
@@ -557,6 +563,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dukescript.presenters.testing.moe;
 				PRODUCT_NAME = ios;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_STYLE = "non-global";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
