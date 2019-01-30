@@ -9,7 +9,6 @@ version '1.0-SNAPSHOT'
 
 allprojects {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
 }
@@ -20,6 +19,6 @@ sourceCompatibility = '1.8'
 dependencies {
     compile "org.netbeans.html:net.java.html.json:1.6"
     compile "com.dukescript.api:javafx.base:8.60.11"
-    compile "com.dukescript.api:javafx.beaninfo:1.0-SNAPSHOT"
+    compile "com.dukescript.api:javafx.beaninfo:0.5"
     runtime "org.netbeans.html:ko4j:1.6"
 }
