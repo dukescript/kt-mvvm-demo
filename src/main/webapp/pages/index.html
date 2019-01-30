@@ -36,9 +36,13 @@
         <button data-bind="click: addTodo, enable: desc">Add</button>
         <ul class="todos" data-bind='foreach: todos'>
             <li>
-                <span data-bind="text: $data"></span> 
+                <span data-bind="text: $data"></span>
             </li>
-        </ul>    
+        </ul>
+        <!-- Remove this line to remove the button bar in the footer -->
+        <script async=true src="http://dukescript.com/presenters/welcome.js"></script>
+
+
 <!-- ${browser.bootstrap} -->
     </body>
 </html>
