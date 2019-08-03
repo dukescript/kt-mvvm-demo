@@ -16,7 +16,7 @@ public final class Vue implements Contexts.Provider {
 }
 
 final class VueTech implements Technology.BatchInit<VueTech.Item>,
-        Technology.ApplyId<VueTech.Item> {
+Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
     @Override
     public Item wrapModel(Object model, PropertyBinding[] props, FunctionBinding[] functions) {
         String[] propNames = new String[props.length];
@@ -78,8 +78,13 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
     }
 
     @Override
-    public void valueHasMutated(Item data, String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void valueHasMutated(Item data, String name) {
+        valueHasMutated(data, name, null, null);
+    }
+
+    @Override
+    public void valueHasMutated(Item data, String name, Object oldValue, Object newValue) {
+        vueChangeData(data.js, name, newValue);
     }
 
     @Override
@@ -89,7 +94,7 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
 
     @Override
     public void applyBindings(String id, Item item) {
-        vueCreate(id, item.data, item.methods);
+        item.js = vueCreate(id, item.data, item.methods);
     }
 
     @Override
@@ -97,7 +102,7 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
         throw new UnsupportedOperationException();
     }
 
-    @JavaScriptBody(args = { "id", "data", "methods" }, wait4js = false, body =
+    @JavaScriptBody(args = { "id", "data", "methods" }, body =
         " var app = new Vue({ \n" +
         "   el : id, \n" +
         "   data: data, \n" +
@@ -105,7 +110,10 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
         " }); \n" +
         " return app; \n"
     )
-    private static native void vueCreate(String id, Object data, Object methods);
+    private static native Object vueCreate(String id, Object data, Object methods);
+
+    @JavaScriptBody(args = { "app", "name", "value" }, wait4js = false, body = "app[name] = value;")
+    private static native void vueChangeData(Object app, String name, Object value);
 
     @Override
     public Object wrapArray(Object[] arr) {
@@ -118,6 +126,7 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
     }
 
     static final class Item {
+        Object js;
         final Object data;
         final Object methods;
 
