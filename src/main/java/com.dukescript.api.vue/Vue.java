@@ -31,7 +31,18 @@ Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
         }
         final Object data = vueData(propNames, propValues);
         final Object methods = vueMethods(model, functionNames, functions);
-        return new Item(data, methods);
+
+        for (int i = 0; i < props.length; i++) {
+            if (props[i].isReadOnly() || props[i].isConstant()) {
+                propNames[i] = null;
+            }
+            if (propValues[i] instanceof Object[]) {
+                propNames[i] = null;
+            }
+        }
+
+        final Object watch = vueWatch(propNames, props);
+        return new Item(data, methods, watch);
     }
 
     @JavaScriptBody(args = { "names", "values" }, body = ""
@@ -42,6 +53,27 @@ Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
         + "return obj;\n"
     )
     private static native Object vueData(String[] names, Object[] values);
+
+    @JavaScriptBody(args = { "names", "bindings" }, javacall = true, body = ""
+        + "var obj = {};\n"
+            + " function createCallback(b) {\n"
+            + "   return function(newValue) {\n"
+            + "    @com.dukescript.api.vue.VueTech::vueValueChange"
+            + "(Lorg/netbeans/html/json/spi/PropertyBinding;Ljava/lang/Object;)(b, newValue); \n"
+            + "   };\n"
+            + " }\n"
+            + " for (var i = 0; i < names.length; i++) {\n"
+            + "  if (names[i] !== null) {\n"
+            + "    obj[names[i]] = createCallback(bindings[i]);\n"
+            + "  }\n"
+            + " }\n"
+            + "return obj;\n"
+    )
+    private static native Object vueWatch(String[] names, PropertyBinding[] bindings);
+
+    static void vueValueChange(PropertyBinding binding, Object newValue) {
+        binding.setValue(newValue);
+    }
 
     @JavaScriptBody(args = { "model", "names", "bindings" }, javacall = true, body = ""
         + " var obj = {}; \n "
@@ -94,7 +126,7 @@ Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
 
     @Override
     public void applyBindings(String id, Item item) {
-        item.js = vueCreate(id, item.data, item.methods);
+        item.js = vueCreate(id, item.data, item.methods, item.watch);
     }
 
     @Override
@@ -102,15 +134,16 @@ Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
         throw new UnsupportedOperationException();
     }
 
-    @JavaScriptBody(args = { "id", "data", "methods" }, body =
+    @JavaScriptBody(args = { "id", "data", "methods", "watch" }, body =
         " var app = new Vue({ \n" +
         "   el : id, \n" +
         "   data: data, \n" +
-        "   methods: methods \n" +
+        "   methods: methods, \n" +
+        "   watch: watch \n" +
         " }); \n" +
         " return app; \n"
     )
-    private static native Object vueCreate(String id, Object data, Object methods);
+    private static native Object vueCreate(String id, Object data, Object methods, Object watch);
 
     @JavaScriptBody(args = { "app", "name", "value" }, wait4js = false, body = "app[name] = value;")
     private static native void vueChangeData(Object app, String name, Object value);
@@ -129,10 +162,12 @@ Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
         Object js;
         final Object data;
         final Object methods;
+        final Object watch;
 
-        Item(Object data, Object methods) {
+        Item(Object data, Object methods, Object watch) {
             this.data = data;
             this.methods = methods;
+            this.watch = watch;
         }
     }
 }
