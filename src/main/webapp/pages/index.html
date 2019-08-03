@@ -37,7 +37,7 @@
             <h1>Your Todos (<span data-bind="text: numTodos"></span>)</h1>
             <label for="key">New Todo:</label>
             <input id="key" type="text" v-model="desc" placeholder="Enter a task"/>
-            <button data-bind="click: addTodo, enable: desc">Add</button>
+            <button v-on:click="addTodo" data-bind="click: addTodo, enable: desc">Add</button>
             <ul class="todos" data-bind='foreach: todos'>
                 <li>
                     <span data-bind="text: $data"></span>

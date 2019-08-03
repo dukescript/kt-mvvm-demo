@@ -1,4 +1,4 @@
-package com.dukescript.api;
+package com.dukescript.api.vue;
 
 import net.java.html.js.JavaScriptBody;
 import org.netbeans.html.context.spi.Contexts;
@@ -18,15 +18,20 @@ public final class Vue implements Contexts.Provider {
 final class VueTech implements Technology.BatchInit<VueTech.Item>,
         Technology.ApplyId<VueTech.Item> {
     @Override
-    public Item wrapModel(Object arg0, PropertyBinding[] props, FunctionBinding[] arg2) {
-        String[] names = new String[props.length];
-        Object[] values = new Object[props.length];
+    public Item wrapModel(Object model, PropertyBinding[] props, FunctionBinding[] functions) {
+        String[] propNames = new String[props.length];
+        Object[] propValues = new Object[props.length];
         for (int i = 0; i < props.length; i++) {
-            names[i] = props[i].getPropertyName();
-            values[i] = props[i].getValue();
+            propNames[i] = props[i].getPropertyName();
+            propValues[i] = props[i].getValue();
         }
-        final Object data = vueData(names, values);
-        return new Item(data);
+        String[] functionNames = new String[functions.length];
+        for (int i = 0; i < functions.length; i++) {
+            functionNames[i] = functions[i].getFunctionName();
+        }
+        final Object data = vueData(propNames, propValues);
+        final Object methods = vueMethods(model, functionNames, functions);
+        return new Item(data, methods);
     }
 
     @JavaScriptBody(args = { "names", "values" }, body = ""
@@ -37,6 +42,25 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
         + "return obj;\n"
     )
     private static native Object vueData(String[] names, Object[] values);
+
+    @JavaScriptBody(args = { "model", "names", "bindings" }, javacall = true, body = ""
+        + " var obj = {}; \n "
+        + " function createCallback(b) {\n"
+        + "   return function(event) {\n"
+        + "    @com.dukescript.api.vue.VueTech::vueMethodCall"
+        + "(Lorg/netbeans/html/json/spi/FunctionBinding;Ljava/lang/Object;Ljava/lang/Object;)(b, model, event); \n"
+        + "   };\n"
+        + " }\n"
+        + " for (var i = 0; i < names.length; i++) {\n"
+        + "  obj[names[i]] = createCallback(bindings[i]);\n"
+        + " }\n"
+        + " return obj;\n"
+    )
+    private static native Object vueMethods(Object model, String[] names, Object[] bindings);
+
+    static void vueMethodCall(FunctionBinding fb, Object model, Object event) {
+        fb.call(model, event);
+    }
 
     @Override
     public Item wrapModel(Object o) {
@@ -65,22 +89,23 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
 
     @Override
     public void applyBindings(String id, Item item) {
-        vueCreate(id, item.data);
+        vueCreate(id, item.data, item.methods);
     }
 
     @Override
     public void applyBindings(Item data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException();
     }
 
-    @JavaScriptBody(args = { "id", "data" }, wait4js = false, body =
-        "var app = new Vue({ \n" +
-        "  el : id, \n" +
-        "  data: data \n" +
-        "}); \n" +
-        "return app; \n"
+    @JavaScriptBody(args = { "id", "data", "methods" }, wait4js = false, body =
+        " var app = new Vue({ \n" +
+        "   el : id, \n" +
+        "   data: data, \n" +
+        "   methods: methods \n" +
+        " }); \n" +
+        " return app; \n"
     )
-    private static native void vueCreate(String id, Object data);
+    private static native void vueCreate(String id, Object data, Object methods);
 
     @Override
     public Object wrapArray(Object[] arr) {
@@ -94,9 +119,11 @@ final class VueTech implements Technology.BatchInit<VueTech.Item>,
 
     static final class Item {
         final Object data;
+        final Object methods;
 
-        Item(Object data) {
+        Item(Object data, Object methods) {
             this.data = data;
+            this.methods = methods;
         }
     }
 }
