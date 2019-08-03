@@ -57,7 +57,7 @@ public final class Demo implements FXBeanInfo.Provider {
 
     public static void onPageLoad() {
         Demo model = new Demo();
-        applyBindings(model);
+        applyBindings(model, "#app");
     }
 
 }
