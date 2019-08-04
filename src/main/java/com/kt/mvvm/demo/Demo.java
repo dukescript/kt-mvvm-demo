@@ -24,7 +24,6 @@
 package com.kt.mvvm.demo;
 
 import com.dukescript.api.javafx.beans.FXBeanInfo;
-import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
@@ -41,14 +40,17 @@ public final class Demo implements FXBeanInfo.Provider {
     private final StringProperty desc = new SimpleStringProperty(this, "desc", "Buy Milk");
     private final BooleanBinding emptyDesc = Bindings.equal(desc, "");
     private final ListProperty<Item> todos = new SimpleListProperty<>(this, "todos", FXCollections.observableArrayList());
-    private final IntegerBinding numTodos = Bindings.createIntegerBinding(todos::size, todos);
+    private final IntegerBinding numTodos = Bindings.createIntegerBinding(this::pendingTodos, todos);
 
-    static final class Item implements FXBeanInfo.Provider {
+    final class Item implements FXBeanInfo.Provider {
         final BooleanProperty done = new SimpleBooleanProperty(this, "done", false);
         final StringProperty text = new SimpleStringProperty(this, "text", "");
 
         Item(String text) {
             this.text.setValue(text);
+            this.done.addListener((o) -> {
+                numTodos.invalidate();
+            });
         }
 
         private final FXBeanInfo info = FXBeanInfo.newBuilder(this)
@@ -68,7 +70,13 @@ public final class Demo implements FXBeanInfo.Provider {
     }
 
     int pendingTodos() {
-        return todos.filtered((item) -> item.done.get()).stream().collect(Collectors.counting()).intValue();
+        int cnt = 0;
+        for (Item item : todos) {
+            if (!item.done.get()) {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 
     private final FXBeanInfo info = FXBeanInfo.newBuilder(this)
