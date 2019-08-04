@@ -16,7 +16,8 @@ public final class Vue implements Contexts.Provider {
 }
 
 final class VueTech implements Technology.BatchInit<VueTech.Item>,
-Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
+Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item>,
+Technology.ToJavaScript<VueTech.Item> {
     @Override
     public Item wrapModel(Object model, PropertyBinding[] props, FunctionBinding[] functions) {
         String[] propNames = new String[props.length];
@@ -125,13 +126,21 @@ Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item> {
     }
 
     @Override
+    public void applyBindings(Item data) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void applyBindings(String id, Item item) {
         item.js = vueCreate(id, item.data, item.methods, item.watch);
     }
 
     @Override
-    public void applyBindings(Item data) {
-        throw new UnsupportedOperationException();
+    public Object toJavaScript(Item item) {
+        if (item.js == null) {
+            item.js = vueCreate(null, item.data, item.methods, item.watch);
+        }
+        return item.js;
     }
 
     @JavaScriptBody(args = { "id", "data", "methods", "watch" }, body =

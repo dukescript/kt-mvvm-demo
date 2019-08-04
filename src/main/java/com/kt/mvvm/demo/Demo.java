@@ -24,10 +24,13 @@
 package com.kt.mvvm.demo;
 
 import com.dukescript.api.javafx.beans.FXBeanInfo;
+import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -37,12 +40,35 @@ import static net.java.html.json.Models.applyBindings;
 public final class Demo implements FXBeanInfo.Provider {
     private final StringProperty desc = new SimpleStringProperty(this, "desc", "Buy Milk");
     private final BooleanBinding emptyDesc = Bindings.equal(desc, "");
-    private final ListProperty<String> todos = new SimpleListProperty<>(this, "todos", FXCollections.observableArrayList());
+    private final ListProperty<Item> todos = new SimpleListProperty<>(this, "todos", FXCollections.observableArrayList());
     private final IntegerBinding numTodos = Bindings.createIntegerBinding(todos::size, todos);
 
+    static final class Item implements FXBeanInfo.Provider {
+        final BooleanProperty done = new SimpleBooleanProperty(this, "done", false);
+        final StringProperty text = new SimpleStringProperty(this, "text", "");
+
+        Item(String text) {
+            this.text.setValue(text);
+        }
+
+        private final FXBeanInfo info = FXBeanInfo.newBuilder(this)
+            .property(done)
+            .property(text)
+            .build();
+
+        @Override
+        public FXBeanInfo getFXBeanInfo() {
+            return info;
+        }
+    }
+
     void addTodo() {
-        todos.getValue().add(desc.getValue());
+        todos.getValue().add(new Item(desc.getValue()));
         desc.setValue("");
+    }
+
+    int pendingTodos() {
+        return todos.filtered((item) -> item.done.get()).stream().collect(Collectors.counting()).intValue();
     }
 
     private final FXBeanInfo info = FXBeanInfo.newBuilder(this)

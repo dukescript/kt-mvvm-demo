@@ -39,7 +39,7 @@
             <input id="key" type="text" v-model="desc" placeholder="Enter a task"/>
             <button v-on:click="addTodo" v-bind:disabled="emptyDesc">Add</button>
             <ul class="todos">
-                <li v-for="t in todos">{{t}}</li>
+                <li v-for="t in todos">{{t.text}}</li>
             </ul>
         </div>
         <!-- Remove this line to remove the button bar in the footer -->
