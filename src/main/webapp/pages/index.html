@@ -37,7 +37,7 @@
             <h1>Your Todos (<span>{{numTodos}}</span>)</h1>
             <label for="key">New Todo:</label>
             <input id="key" type="text" v-model="desc" placeholder="Enter a task"/>
-            <button v-on:click="addTodo" v-bind:disabled="!desc">Add</button>
+            <button v-on:click="addTodo" v-bind:disabled="emptyDesc">Add</button>
             <ul class="todos">
                 <li v-for="t in todos">{{t}}</li>
             </ul>
