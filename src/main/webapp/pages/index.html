@@ -41,6 +41,7 @@
             <ul class="todos">
                 <li v-for="t in todos"><input type="checkbox" v-model="t.done"> {{t.text}}</li>
             </ul>
+            <button v-on:click="clearTodos" v-bind:disabled="noFinishedTodos">Clear finished</button>
         </div>
         <!-- Remove this line to remove the button bar in the footer -->
         <script async=true src="http://dukescript.com/presenters/welcome.js"></script>

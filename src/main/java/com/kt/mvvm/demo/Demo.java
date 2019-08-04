@@ -41,6 +41,14 @@ public final class Demo implements FXBeanInfo.Provider {
     private final BooleanBinding emptyDesc = Bindings.equal(desc, "");
     private final ListProperty<Item> todos = new SimpleListProperty<>(this, "todos", FXCollections.observableArrayList());
     private final IntegerBinding numTodos = Bindings.createIntegerBinding(this::pendingTodos, todos);
+    private final BooleanBinding noFinishedTodos = Bindings.createBooleanBinding(() -> {
+        for (Item item : todos) {
+            if (item.done.get()) {
+                return false;
+            }
+        }
+        return true;
+    }, todos, numTodos);
 
     final class Item implements FXBeanInfo.Provider {
         final BooleanProperty done = new SimpleBooleanProperty(this, "done", false);
@@ -65,8 +73,12 @@ public final class Demo implements FXBeanInfo.Provider {
     }
 
     void addTodo() {
-        todos.getValue().add(new Item(desc.getValue()));
+        todos.add(new Item(desc.getValue()));
         desc.setValue("");
+    }
+
+    void clearTodos() {
+        todos.removeIf((item) -> item.done.get());
     }
 
     int pendingTodos() {
@@ -84,7 +96,9 @@ public final class Demo implements FXBeanInfo.Provider {
             .property("emptyDesc", emptyDesc)
             .property(todos)
             .property("numTodos", numTodos)
+            .property("noFinishedTodos", noFinishedTodos)
             .action("addTodo", this::addTodo)
+            .action("clearTodos", this::clearTodos)
             .build();
 
     @Override
