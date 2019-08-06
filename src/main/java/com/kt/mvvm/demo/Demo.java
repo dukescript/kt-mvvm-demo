@@ -109,8 +109,8 @@ public final class Demo implements FXBeanInfo.Provider {
 
     public static void onPageLoad() {
         Vue.component("todo-item")
-            .props("done", "text")
-            .template("<span><input type='checkbox' v-model='done'> {{text}}</span>")
+            .props("item")
+            .template("<span><input type='checkbox' v-model='item.done'> {{item.text}}</span>")
             .register();
         Demo model = new Demo();
         applyBindings(model, "#app");

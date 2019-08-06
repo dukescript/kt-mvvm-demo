@@ -36,7 +36,7 @@
             <input id="key" type="text" v-model="desc" placeholder="Enter a task"/>
             <button v-on:click="addTodo" v-bind:disabled="emptyDesc">Add</button>
             <ul class="todos">
-                <li v-for="t in todos"><todo-item v-bind:key="t.text" v-bind:done="t.done" v-bind:text="t.text"/></li>
+                <li v-for="t in todos"><todo-item v-bind:key="t.text" v-bind:item="t"/></li>
             </ul>
             <button v-on:click="clearTodos" v-bind:disabled="noFinishedTodos">Clear finished</button>
         </div>
