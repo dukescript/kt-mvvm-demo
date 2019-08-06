@@ -24,6 +24,7 @@
 package com.kt.mvvm.demo;
 
 import com.dukescript.api.javafx.beans.FXBeanInfo;
+import com.dukescript.api.vue.Vue;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
@@ -107,6 +108,10 @@ public final class Demo implements FXBeanInfo.Provider {
     }
 
     public static void onPageLoad() {
+        Vue.component("todo-item")
+            .props("done", "text")
+            .template("<span><input type='checkbox' v-model='done'> {{text}}</span>")
+            .register();
         Demo model = new Demo();
         applyBindings(model, "#app");
     }

@@ -22,6 +22,9 @@ allprojects {
         mavenCentral()
     }
 }
+compileJava {
+    classpath += files("src/main/resources")
+}
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'

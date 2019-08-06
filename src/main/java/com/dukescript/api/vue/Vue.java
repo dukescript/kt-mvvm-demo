@@ -1,6 +1,13 @@
 package com.dukescript.api.vue;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import net.java.html.js.JavaScriptBody;
+import net.java.html.js.JavaScriptResource;
+import net.java.html.json.Models;
 import org.netbeans.html.context.spi.Contexts;
 import org.netbeans.html.json.spi.FunctionBinding;
 import org.netbeans.html.json.spi.PropertyBinding;
@@ -9,12 +16,58 @@ import org.openide.util.lookup.ServiceProvider;
 
 @ServiceProvider(service = Contexts.Provider.class)
 public final class Vue implements Contexts.Provider {
+
+    public static ComponentBuilder component(String tagName) {
+        return new ComponentBuilder(tagName);
+    }
+
+
+    public static final class ComponentBuilder {
+        String tagName;
+        String template;
+        Class<?> modelClass;
+        Set<String> props = new LinkedHashSet<>();
+
+        ComponentBuilder(String tagName) {
+            this.tagName = tagName;
+        }
+
+        public ComponentBuilder model(Class<?> modelClass) {
+            this.modelClass = modelClass;
+            return this;
+        }
+        public ComponentBuilder template(String textOrReference) {
+            this.template = textOrReference;
+            return this;
+        }
+
+        public ComponentBuilder props(String... names) {
+            props.addAll(Arrays.asList(names));
+            return this;
+        }
+
+        public void register() {
+            VueTech.registerComponent(this);
+        }
+    }
+
+    static Object createComponent(Object callback) throws Exception {
+        Object data = ((VueCallback)callback).initialize();
+        if (data == null) {
+            return VueTech.emptyObj();
+        }
+        assert Models.isModel(data.getClass());
+        Object raw = Models.toRaw(data);
+        return raw;
+    }
+
     @Override
     public void fillContext(Contexts.Builder bldr, Class<?> type) {
         bldr.register(Technology.class, new VueTech(), 37037);
     }
 }
 
+@JavaScriptResource("vue.js")
 final class VueTech implements Technology.BatchInit<VueTech.Item>,
 Technology.ApplyId<VueTech.Item>, Technology.ValueMutated<VueTech.Item>,
 Technology.ToJavaScript<VueTech.Item> {
@@ -179,4 +232,38 @@ Technology.ToJavaScript<VueTech.Item> {
             this.watch = watch;
         }
     }
+
+    static void registerComponent(Vue.ComponentBuilder b) {
+        registerComponent0(
+            b.tagName,
+            b.props.toArray(new String[0]),
+            b.template, () -> {
+                if (b.modelClass == null) {
+                    return null;
+                }
+                return b.modelClass.newInstance();
+            }
+        );
+    }
+
+    @JavaScriptBody(args = {  }, body = "return {};")
+    static native Object emptyObj();
+
+    @JavaScriptBody(
+        args = {"name", "props", "template", "callback"},
+        javacall = true, wait4js = false, body
+            = "Vue.component(name, { \n"
+            + "   data: function () { \n "
+            + "     return @com.dukescript.api.vue.Vue::createComponent(Ljava/lang/Object;)(callback); \n"
+            + "   }, \n"
+            + "   props : props, \n"
+            + "   template : template \n"
+            + "});"
+    )
+    private static native void registerComponent0(String name, String[] props, String template, VueCallback callback);
+}
+
+@FunctionalInterface
+interface VueCallback {
+    Object initialize() throws Exception;
 }
