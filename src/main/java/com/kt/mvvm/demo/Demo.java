@@ -30,8 +30,10 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -107,10 +109,37 @@ public final class Demo implements FXBeanInfo.Provider {
         return info;
     }
 
+    public static final class TodoItemCtrl implements FXBeanInfo.Provider {
+        private final ObjectProperty<Item> item = new SimpleObjectProperty<>(this, "item");
+        private final FXBeanInfo info = FXBeanInfo.newBuilder(this)
+            .action("important", this::important)
+            .property(item)
+            .build();
+
+        private void important() {
+            final StringProperty textProp = item.get().text;
+            final String text = textProp.get();
+            if (text.endsWith("!")) {
+                textProp.set(text.substring(0, text.length() - 1));
+            } else {
+                textProp.set(text + "!");
+            }
+        }
+
+        @Override
+        public FXBeanInfo getFXBeanInfo() {
+            return info;
+        }
+    }
+
     public static void onPageLoad() {
         Vue.component("todo-item")
             .props("item")
-            .template("<span><input type='checkbox' v-model='item.done'> {{item.text}}</span>")
+            .model(TodoItemCtrl.class)
+            .template("<span>"
+                    + "  <input type='checkbox' v-model='item.done'> {{item.text}}"
+                    + "  <button v-on:click='important'>Important</button>"
+                    + "</span>")
             .register();
         Demo model = new Demo();
         applyBindings(model, "#app");

@@ -1,7 +1,5 @@
 package com.dukescript.api.vue;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -254,7 +252,11 @@ Technology.ToJavaScript<VueTech.Item> {
         javacall = true, wait4js = false, body
             = "Vue.component(name, { \n"
             + "   data: function () { \n "
-            + "     return @com.dukescript.api.vue.Vue::createComponent(Ljava/lang/Object;)(callback); \n"
+            + "     var v = @com.dukescript.api.vue.Vue::createComponent(Ljava/lang/Object;)(callback); \n"
+            + "     for (var i = 0; i < props.length; i++) { \n"
+            + "       delete v[props[i]]; \n"
+            + "     } \n"
+            + "     return v; \n"
             + "   }, \n"
             + "   props : props, \n"
             + "   template : template \n"
