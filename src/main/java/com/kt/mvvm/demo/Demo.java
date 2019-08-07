@@ -133,6 +133,11 @@ public final class Demo implements FXBeanInfo.Provider {
     }
 
     public static void onPageLoad() {
+        Vue.component("clear-all")
+            .props("disabled", "clear")
+            .template("<button v-on:click='$emit(\"clear\")' v-bind:disabled='disabled'>Clear finished</button>")
+            .register();
+
         Vue.component("todo-item")
             .props("item")
             .model(TodoItemCtrl.class)

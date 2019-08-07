@@ -38,7 +38,7 @@
             <ul class="todos">
                 <li v-for="t in todos"><todo-item v-bind:key="t.text" v-bind:item="t"/></li>
             </ul>
-            <button v-on:click="clearTodos" v-bind:disabled="noFinishedTodos">Clear finished</button>
+            <clear-all v-on:clear='clearTodos' v-bind:disabled="noFinishedTodos"/>
         </div>
 
 <!-- ${browser.bootstrap} -->
