@@ -20,7 +20,7 @@ void addTodo() {
 ```
 
 those properties are then [declaratively assigned](src/main/webapp/pages/index.html#L54)
-to the *Materialize UI* components to form a slick, modern application.
+to the *Materialize UI* components to form a [slick, modern application](https://dukescript.com/javafxlight/).
 
 Get started with a few simple commands:
 
