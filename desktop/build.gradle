@@ -1,13 +1,21 @@
-
-apply plugin: 'kotlin'
-apply plugin: 'application'
+plugins {
+    id 'application'
+    id 'kotlin'
+    id 'org.openjfx.javafxplugin' version '0.0.7' apply false
+}
 
 def commonProject = project.parent
+def jdk8 = System.getProperty("java.version").startsWith("1.8")
 
-mainClassName = 'com.kt.mvvm.demo.DesktopMain'
+if (hasProperty("runClassName")) {
+    mainClassName = runClassName
+} else {
+    mainClassName = 'com.kt.mvvm.demo.DesktopMain'
+}
+
 distributions {
     main {
-        baseName = commonProject.name + '-desktop'
+        distributionBaseName = commonProject.name + '-desktop'
         contents {
             from "${commonProject.projectDir}/src/main/webapp/"
         }
@@ -16,7 +24,14 @@ distributions {
 tasks.run {
     jvmArgs "-Dbrowser.rootdir=${commonProject.projectDir}/src/main/webapp/"
 }
+if (!jdk8) {
+    apply plugin: 'org.openjfx.javafxplugin'
+    javafx {
+        version = "11"
+        modules = ["javafx.web"]
+    }
+}
 dependencies {
-    compile commonProject
-    runtime "org.netbeans.html:net.java.html.boot.fx:1.5.1"
+    implementation commonProject
+    runtimeOnly "org.netbeans.html:net.java.html.boot.fx:1.5.1"
 }
